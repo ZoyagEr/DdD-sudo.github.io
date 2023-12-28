@@ -92,59 +92,59 @@ var Heart = function(x,y){
   for (var i = 0; i < precision; i++) {
     var step = (i / precision - 0.5) * (Math.PI * 2);
     // 使用心型方程式绘制爱心
-function Heart(x, y, size, speedX, speedY, speedSize) {
-  // 重新定义vertices数组，存储五角星的各个点坐标
-  this.vertices = [
-    { x: 0, y: -size },
-    { x: Math.cos((1 / 5) * Math.PI) * size, y: -Math.sin((1 / 5) * Math.PI) * size },
-    { x: Math.cos((2 / 5) * Math.PI) * size, y: -Math.sin((2 / 5) * Math.PI) * size },
-    { x: Math.cos((3 / 5) * Math.PI) * size, y: -Math.sin((3 / 5) * Math.PI) * size },
-    { x: Math.cos((4 / 5) * Math.PI) * size, y: -Math.sin((4 / 5) * Math.PI) * size },
-  ];
-  // 其他属性和爱心一样
-  this.x = x;
-  this.y = y;
-  this.size = size;
-  this.speedX = speedX;
-  this.speedY = speedY;
-  this.speedSize = speedSize;
+ var Star = function(x, y) {
+  this.x = x || Math.random() * ww;
+  this.y = y || Math.random() * wh;
+  this.size = Math.random() * 2 + 1;
+  this.shadowBlur = Math.random() * 10;
+  this.speedX = (Math.random() + 0.2 - 0.6) * 8;
+  this.speedY = (Math.random() + 0.2 - 0.6) * 8;
+  this.speedSize = Math.random() * 0.05 + 0.01;
+  this.opacity = 1;
+  this.vertices = [];
+
+  var angleStep = (Math.PI * 2) / 5; // 五角星的角度步长
+  var radius = 16; // 五角星的半径
+
+  for (var i = 0; i < 5; i++) {
+    // 使用五角星的数学公式计算顶点坐标
+    var angle = i * angleStep;
+    var vector = {
+      x: Math.cos(angle) * radius,
+      y: Math.sin(angle) * radius
+    };
+    this.vertices.push(vector);
+  }
 }
-Heart.prototype.draw = function() {
-  // 改变五角星的尺寸
+
+Star.prototype.draw = function() {
   this.size -= this.speedSize;
-  // 改变五角星的位置
   this.x += this.speedX;
   this.y += this.speedY;
 
-  // 保存当前的图像状态
   ctx.save();
-  // 调整画布的原点位置，将五角星的中心点偏移
-  ctx.translate(this.x, this.y);
-  // 缩放五角星的尺寸
+  ctx.translate(-1000, this.y);
   ctx.scale(this.size, this.size);
 
-  // 开始绘制路径
   ctx.beginPath();
-  // 使用新定义的顶点坐标，依次连接各个点
-  for (var i = 0; i < this.vertices.length; i++) {
+
+  for (var i = 0; i < 5; i++) {
     var vector = this.vertices[i];
     ctx.lineTo(vector.x, vector.y);
   }
-
-  // 根据五角星的尺寸设置透明度和阴影效果
   ctx.globalAlpha = this.size;
   ctx.shadowBlur = Math.round((3 - this.size) * 10);
   ctx.shadowColor = "hsla(0, 100%, 60%,0.5)";
-  // 设置阴影距形状的水平距离
-  ctx.shadowOffsetX = 0;
-  // 使用screen合成模式，填充五角星的轮廓
+  ctx.shadowOffsetX = this.x + 1000;
   ctx.globalCompositeOperation = "screen";
+
   ctx.closePath();
   ctx.fill();
 
-  // 恢复之前保存的图像状态
   ctx.restore();
 };
+
+
 
 
 function render(a){
