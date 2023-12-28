@@ -93,52 +93,55 @@ var Heart = function(x,y){
     var step = (i / precision - 0.5) * (Math.PI * 2);
     // 使用心型方程式绘制爱心
 function Heart(x, y, size, speedX, speedY, speedSize) {
+  // 重新定义vertices数组，存储五角星的各个点坐标
+  this.vertices = [
+    { x: 0, y: -size },
+    { x: Math.cos((1 / 5) * Math.PI) * size, y: -Math.sin((1 / 5) * Math.PI) * size },
+    { x: Math.cos((2 / 5) * Math.PI) * size, y: -Math.sin((2 / 5) * Math.PI) * size },
+    { x: Math.cos((3 / 5) * Math.PI) * size, y: -Math.sin((3 / 5) * Math.PI) * size },
+    { x: Math.cos((4 / 5) * Math.PI) * size, y: -Math.sin((4 / 5) * Math.PI) * size },
+  ];
+  // 其他属性和爱心一样
   this.x = x;
   this.y = y;
   this.size = size;
   this.speedX = speedX;
   this.speedY = speedY;
   this.speedSize = speedSize;
-
-  // 计算五角星各个顶点的坐标
-  this.vertices = [];
-  var step = Math.PI / 5;
-  var angle = -Math.PI / 2;
-  for (var i = 0; i < 5; i++) {
-    var x = Math.cos(angle);
-    var y = Math.sin(angle);
-    this.vertices.push({x: x, y: y});
-    angle += step;
-    x = Math.cos(angle) * 0.5;
-    y = Math.sin(angle) * 0.5;
-    this.vertices.push({x: x, y: y});
-    angle += step;
-  }
 }
-
 Heart.prototype.draw = function() {
-  // 改变五角星尺寸
+  // 改变五角星的尺寸
   this.size -= this.speedSize;
-  // 改变五角星位置
+  // 改变五角星的位置
   this.x += this.speedX;
   this.y += this.speedY;
-  // 把当前状态的一份拷贝压入到一个保存图像状态的栈中
+
+  // 保存当前的图像状态
   ctx.save();
-  // 重新定义画布(0,0)点的位置，之后绘制的图形都基于该点为(0,0)点进行绘制
+  // 调整画布的原点位置，将五角星的中心点偏移
   ctx.translate(this.x, this.y);
-  // 缩放
+  // 缩放五角星的尺寸
   ctx.scale(this.size, this.size);
-  // 开始绘制五角星
+
+  // 开始绘制路径
   ctx.beginPath();
-  ctx.moveTo(this.vertices[0].x, this.vertices[0].y);
-  for (var i = 1; i < this.vertices.length; i++) {
-    ctx.lineTo(this.vertices[i].x, this.vertices[i].y);
+  // 使用新定义的顶点坐标，依次连接各个点
+  for (var i = 0; i < this.vertices.length; i++) {
+    var vector = this.vertices[i];
+    ctx.lineTo(vector.x, vector.y);
   }
+
+  // 根据五角星的尺寸设置透明度和阴影效果
+  ctx.globalAlpha = this.size;
+  ctx.shadowBlur = Math.round((3 - this.size) * 10);
+  ctx.shadowColor = "hsla(0, 100%, 60%,0.5)";
+  // 设置阴影距形状的水平距离
+  ctx.shadowOffsetX = 0;
+  // 使用screen合成模式，填充五角星的轮廓
+  ctx.globalCompositeOperation = "screen";
   ctx.closePath();
-  // 设置填充颜色
-  ctx.fillStyle = "red";
-  // 填充轮廓
   ctx.fill();
+
   // 恢复之前保存的图像状态
   ctx.restore();
 };
@@ -167,7 +170,7 @@ window.addEventListener("resize", onResize);
 requestAnimationFrame(render);
 
 window.onload=function starttime(){
-        time(h1,'2024/1/1');     // 2021年春节时间
+        time(h1,'2022/2/1');     // 2021年春节时间
         ptimer = setTimeout(starttime,1000); // 添加计时器
 }
 
@@ -187,13 +190,13 @@ function time(obj,futimg){
     var hour = parseInt(time/3600)-24*day;    // 小时 60*60 总小时数-过去的小时数=现在的小时数 
     var minute = parseInt(time%3600/60); // 分 -(day*24) 以60秒为一整份 取余 剩下秒数 秒数/60 就是分钟数
     var second = parseInt(time%60);  // 以60秒为一整份 取余 剩下秒数
-    obj.innerHTML="<p2>新年快乐<br>I can never let you go<br></p2>"+"<span>距离2024年还有:<span><br>"+day+"天"+hour+"小时"+minute+"分"+second+"秒"+"<br>"
+    obj.innerHTML="<p2>小王新年快乐<br>I can never let you go<br></p2>"+"<span>距离2022年还有:<span><br>"+day+"天"+hour+"小时"+minute+"分"+second+"秒"+"<br>"
     return true;
 }
 
 
 </script>
-<audio autoplay="autoplay" loop="loop" preload="auto"     src="https://sf6-cdn-tos.douyinstatic.com/obj/ies-music/7170534431801838367.mp3">       
+<audio autoplay="autoplay" loop="loop" preload="auto"     src="http://music.163.com/song/media/outer/url?id=1851244378.mp3">       
 </audio>
 </body>
 </html>
