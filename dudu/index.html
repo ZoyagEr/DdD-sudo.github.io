@@ -182,7 +182,7 @@ function time(obj,futimg){
     var hour = parseInt(time/3600)-24*day;    // 小时 60*60 总小时数-过去的小时数=现在的小时数 
     var minute = parseInt(time%3600/60); // 分 -(day*24) 以60秒为一整份 取余 剩下秒数 秒数/60 就是分钟数
     var second = parseInt(time%60);  // 以60秒为一整份 取余 剩下秒数
-    obj.innerHTML="<p2>2024<br>多喜乐，长安宁，岁无忧，久安康<br>韶华常在，明年依旧，相与笑春风<br>岁聿云暮，一元复始，辞暮尔尔，烟火年年<br>过尽千帆仍有梦，眉眼轻扬是少年<br>恭贺新禧，愿天上人间，占得欢娱，年年今夜^-^<br></p2>"+"<span>距离2024年还有:<span><br>"+day+"天"+hour+"小时"+minute+"分"+second+"秒"+"<br>"
+    obj.innerHTML="<p2>2024<br>多喜乐，长安宁，岁无忧，久安康<br>韶华常在，明年依旧，相与笑春风<br>辞暮尔尔，烟火年年<br>过尽千帆仍有梦，眉眼轻扬是少年<br>恭贺新禧，愿天上人间<br>占得欢娱，年年今夜^-^<br></p2>"+"<span>距离2024年还有:<span><br>"+day+"天"+hour+"小时"+minute+"分"+second+"秒"+"<br>"
     return true;
 }
 
